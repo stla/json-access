@@ -29,6 +29,21 @@ jsonElemsAtR json indices lindices result = do
   let out = jsonElemsAt json (map cintToInt indices)
   (>>=) (newCString out) (poke result)
 
+foreign export ccall jsonElemAtR :: Ptr CString -> Ptr CInt -> Ptr CString -> IO ()
+jsonElemAtR :: Ptr CString -> Ptr CInt -> Ptr CString -> IO ()
+jsonElemAtR json index result = do
+  json <- (>>=) (peek json) peekCString
+  index <- peek index
+  let out = jsonElemAt json (fromIntegral index :: Int)
+  (>>=) (newCString out) (poke result)
+
+foreign export ccall jsonElemAt_ifNumberR :: Ptr CString -> Ptr CInt -> Ptr CString -> IO ()
+jsonElemAt_ifNumberR :: Ptr CString -> Ptr CInt -> Ptr CString -> IO ()
+jsonElemAt_ifNumberR json index result = do
+  json <- (>>=) (peek json) peekCString
+  index <- peek index
+  let out = jsonElemAt_ifNumber json (fromIntegral index :: Int)
+  (>>=) (newCString out) (poke result)
 
 cintToInt :: CInt -> Int
 cintToInt i = (fromIntegral i :: Int)
