@@ -53,6 +53,14 @@ jsonElemAt_ifObjectR json index result = do
   let out = jsonElemAt_ifObject json (fromIntegral index :: Int)
   (>>=) (newCString out) (poke result)
 
+foreign export ccall jsonElemAt_ifArrayR :: Ptr CString -> Ptr CInt -> Ptr CString -> IO ()
+jsonElemAt_ifArrayR :: Ptr CString -> Ptr CInt -> Ptr CString -> IO ()
+jsonElemAt_ifArrayR json index result = do
+  json <- (>>=) (peek json) peekCString
+  index <- peek index
+  let out = jsonElemAt_ifArray json (fromIntegral index :: Int)
+  (>>=) (newCString out) (poke result)
+
 cintToInt :: CInt -> Int
 cintToInt i = (fromIntegral i :: Int)
 

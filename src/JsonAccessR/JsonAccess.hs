@@ -39,12 +39,12 @@ jsonElemAt_ifNumber json index = (unpackChars . encode) $ json ^? nth index . _N
 jsonElemAt_ifObject :: String -> Int -> String
 jsonElemAt_ifObject json index = (unpackChars . encode) $ json ^? nth index . _Object
 --
--- jsonElemAt_ifArray :: String -> Int -> String
--- jsonElemAt_ifArray json index = (unpackChars . encode) $ json ^? nth index . _Array
+jsonElemAt_ifArray :: String -> Int -> String
+jsonElemAt_ifArray json index = (unpackChars . encode) $ json ^? nth index . _Array
 
 tests :: [Bool]
 tests = [test1, test2, test3, test4, test5, test6, test7, test8,
-         test9, test10, test11, test12]
+         test9, test10, test11, test12, test13, test14]
   where json = "{\"a\":{\"b\":8,\"c\":[1,2]},\"b\":null}"
         test1 = jsonAccess json ["a"] == "{\"b\":8,\"c\":[1,2]}"
         test2 = jsonAccess json ["b"] == "null"
@@ -59,3 +59,5 @@ tests = [test1, test2, test3, test4, test5, test6, test7, test8,
         test10 = jsonElemAt_ifNumber y 1 == "1"
         test11 = jsonElemAt_ifObject y 5 == "{}"
         test12 = jsonElemAt_ifObject y 1 == "null"
+        test13 = jsonElemAt_ifArray y 3 == "[0,1]"
+        test14 = jsonElemAt_ifArray y 0 == "null"
