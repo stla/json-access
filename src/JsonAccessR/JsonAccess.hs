@@ -3,18 +3,40 @@ module JsonAccessR.JsonAccess
   where
 import           Control.Lens                  ((^?), (^@..))
 import           Data.Aeson                    (encode)
+import           Data.Aeson.Encode.Pretty
 import           Data.Aeson.Lens
 import           Data.Aeson.Types
 import           Data.ByteString               (ByteString)
 import           Data.ByteString.Lazy.Internal (unpackChars)
+import           Data.Maybe                    (fromMaybe)
 import           Data.Text                     (Text)
-import qualified Data.Vector as V
-import Data.Maybe (fromMaybe)
+import qualified Data.Vector                   as V
 
 sencode :: Maybe Value -> String
 sencode = (unpackChars . encode)
 
-x = ("{ \"a\": { \"b\": 8} }" :: String) ^? (foldl (.) _Value $ map key ["a", "b"])
+jsonPretty :: String -> String -> String -> String
+jsonPretty json indent format = unpackChars $ encodePretty' config $ json ^? _Value
+                                where config = Config { confIndent = confindent,
+                                                        confCompare = mempty,
+                                                        confNumFormat = numformat }
+                                      confindent =
+                                        case indent of
+                                          "indent0" -> Spaces 0
+                                          "indent1" -> Spaces 1
+                                          "indent2" -> Spaces 2
+                                          "indent3" -> Spaces 3
+                                          "indent4" -> Spaces 4
+                                          "tab"     -> Tab
+                                          _         -> Tab
+                                      numformat =
+                                        case format of
+                                          "generic"    -> Generic
+                                          "scientific" -> Scientific
+                                          "decimal"    -> Decimal
+                                          _            -> Generic
+
+
 
 jsonAccess :: String -> [Text] -> String
 jsonAccess json path = sencode $ json ^? (foldl (.) _Value $ map key path)

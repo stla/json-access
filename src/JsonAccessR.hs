@@ -84,6 +84,15 @@ jsonMembersR json result = do
   let out = jsonMembers json
   (>>=) (newCString out) (poke result)
 
+foreign export ccall jsonPrettyR :: Ptr CString -> Ptr CString -> Ptr CString -> Ptr CString -> IO ()
+jsonPrettyR :: Ptr CString -> Ptr CString -> Ptr CString -> Ptr CString -> IO ()
+jsonPrettyR json indent format result = do
+  json <- (>>=) (peek json) peekCString
+  indent <- (>>=) (peek indent) peekCString
+  format <- (>>=) (peek format) peekCString
+  let out = jsonPretty json indent format
+  (>>=) (newCString out) (poke result)
+
 
 cintToInt :: CInt -> Int
 cintToInt i = (fromIntegral i :: Int)
