@@ -3,11 +3,11 @@
 module JsonAccessR
   where
 import           Data.Text              (pack)
-import qualified Data.Vector.SEXP       as DV
+-- import qualified Data.Vector.SEXP       as DV
 import           Foreign
 import           Foreign.C
-import           Foreign.R              (SEXP)
-import qualified Foreign.R.Type         as R
+-- import           Foreign.R              (SEXP)
+-- import qualified Foreign.R.Type         as R
 import           JsonAccessR.JsonAccess
 
 foreign export ccall jsonAccessR :: Ptr CString -> Ptr CString -> Ptr CInt -> Ptr CString -> IO ()
