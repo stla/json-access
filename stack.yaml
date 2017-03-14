@@ -59,10 +59,10 @@ extra-package-dbs: []
 # arch: x86_64
 #
 # Extra directories used by stack for building
-extra-include-dirs:
-- C:\PortableApps\R-portable_3.3.2\App\R-Portable\include
-extra-lib-dirs:
-- C:\PortableApps\R-portable_3.3.2\App\R-Portable\bin\x64
+# extra-include-dirs:
+# - C:\PortableApps\R-portable_3.3.2\App\R-Portable\include
+# extra-lib-dirs:
+# - C:\PortableApps\R-portable_3.3.2\App\R-Portable\bin\x64
 #
 # Allow a newer minor version of GHC than the snapshot specifies
 # compiler-check: newer-minor
